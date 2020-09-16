@@ -63,6 +63,7 @@ public class CubeManager : MonoBehaviour
                 LeanTween.moveLocalZ(unsortedList[min], 3, .5f).setLoopPingPong(1);
 
             }
+            LeanTween.color(unsortedList[i], Color.green, .25f);
         }
     }
     private void resetArray()
