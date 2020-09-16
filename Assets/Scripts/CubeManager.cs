@@ -48,13 +48,20 @@ public class CubeManager : MonoBehaviour
                 }
             }
             if (min != i) {
+                yield return new WaitForSeconds(.5f);
                 temp = unsortedList[i];
                 unsortedList[i] = unsortedList[min];
                 unsortedList[min] = temp;
 
                 tempPos = unsortedList[i].transform.localPosition;
-                unsortedList[i].transform.localPosition = new Vector3( unsortedList[min].transform.localPosition.x,tempPos.y, tempPos.z);
-                unsortedList[min].transform.localPosition = new Vector3(tempPos.x, unsortedList[min].transform.localPosition.y, unsortedList[min].transform.localPosition.z);
+                //unsortedList[i].transform.localPosition = new Vector3( unsortedList[min].transform.localPosition.x,tempPos.y, tempPos.z);
+                //unsortedList[min].transform.localPosition = new Vector3(tempPos.x, unsortedList[min].transform.localPosition.y, unsortedList[min].transform.localPosition.z);
+                LeanTween.moveLocalX(unsortedList[i], unsortedList[min].transform.localPosition.x, 1f);
+                LeanTween.moveLocalZ(unsortedList[i], -3, .5f).setLoopPingPong(1);
+
+                LeanTween.moveLocalX(unsortedList[min], unsortedList[i].transform.localPosition.x, 1f);
+                LeanTween.moveLocalZ(unsortedList[min], 3, .5f).setLoopPingPong(1);
+
             }
         }
     }
