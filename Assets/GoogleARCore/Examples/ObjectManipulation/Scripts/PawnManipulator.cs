@@ -96,8 +96,6 @@ namespace GoogleARCore.Examples.ObjectManipulation
                 {
                     // Instantiate game object at the hit pose.
                     var gameObject = Instantiate(PawnPrefab, hit.Pose.position, hit.Pose.rotation);
-                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes));
-                    cubeManager.Initsialize();
                     // Instantiate manipulator.
                     var manipulator =
                         Instantiate(ManipulatorPrefab, hit.Pose.position, hit.Pose.rotation);
@@ -114,6 +112,8 @@ namespace GoogleARCore.Examples.ObjectManipulation
 
                     // Select the placed object.
                     manipulator.GetComponent<Manipulator>().Select();
+                    cubeManager.barGraphs.Add(new BarGraph(manipulator, cubeManager.numberOfCubes));
+                    cubeManager.GenerateBlocks();
                 }
             }
         }

@@ -31,8 +31,8 @@ public class CubeManager : MonoBehaviour
             {
                 int randomHeight = Random.Range(1, cubeHeightMax + 1);
                 GameObject instance = Instantiate(cube, graph.position.transform.position, Quaternion.identity);
-                instance.transform.position = new Vector3(graph.position.transform.position.x + i * instance.transform.localScale.x, graph.position.transform.position.y + (randomHeight / 2.0f), graph.position.transform.position.z);
-                instance.transform.localScale = new Vector3(instance.transform.localScale.x *0.8f, randomHeight, instance.transform.localScale.z);
+                instance.transform.position = new Vector3(graph.position.transform.position.x + i * instance.transform.localScale.x, graph.position.transform.position.y + ((float)randomHeight / 50 / 2.0f), graph.position.transform.position.z);
+                instance.transform.localScale = new Vector3(instance.transform.localScale.x *0.8f, (float)randomHeight/50, instance.transform.localScale.z);
                 instance.transform.parent = graph.position.transform;
 
                 graph.cubesArray[i] = instance;
@@ -78,18 +78,18 @@ public class CubeManager : MonoBehaviour
                     unsortedList[y + 1] = temp;
 
                     tempPos = unsortedList[y].transform.localPosition;
-                    //unsortedList[y].transform.localPosition = new Vector3(unsortedList[y+1].transform.localPosition.x, tempPos.y, tempPos.z);
-                    //unsortedList[y+1].transform.localPosition = new Vector3(tempPos.x, unsortedList[y+1].transform.localPosition.y, unsortedList[y+1].transform.localPosition.z);
+                    unsortedList[y].transform.localPosition = new Vector3(unsortedList[y + 1].transform.localPosition.x, tempPos.y, tempPos.z);
+                    unsortedList[y + 1].transform.localPosition = new Vector3(tempPos.x, unsortedList[y + 1].transform.localPosition.y, unsortedList[y + 1].transform.localPosition.z);
                     LeanTween.color(unsortedList[y], Color.red, .4f);
                     LeanTween.color(unsortedList[y+1], Color.red, .4f);
                     LeanTween.color(unsortedList[y+1], unsortedList[y].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
                     LeanTween.color(unsortedList[y], unsortedList[y].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
 
-                    LeanTween.moveLocalX(unsortedList[y], unsortedList[y + 1].transform.localPosition.x, 1f);
-                    LeanTween.moveLocalZ(unsortedList[y], -3, .5f).setLoopPingPong(1);
+                    //LeanTween.moveLocalX(unsortedList[y], unsortedList[y + 1].transform.localPosition.x, 1f);
+                    //LeanTween.moveLocalZ(unsortedList[y], -0.3f, .5f).setLoopPingPong(1);
 
-                    LeanTween.moveLocalX(unsortedList[y + 1], unsortedList[y].transform.localPosition.x, 1f);
-                    LeanTween.moveLocalZ(unsortedList[y + 1], 3, .5f).setLoopPingPong(1);
+                    //LeanTween.moveLocalX(unsortedList[y + 1], unsortedList[y].transform.localPosition.x, 1f);
+                    //LeanTween.moveLocalZ(unsortedList[y + 1], 0.3f, .5f).setLoopPingPong(1);
                 }
             }
             LeanTween.color(unsortedList[numberOfCubes-x-1], Color.green, .4f).setDelay(1f);
@@ -122,17 +122,17 @@ public class CubeManager : MonoBehaviour
                 unsortedList[min] = temp;
 
                 tempPos = unsortedList[i].transform.localPosition;
-                //unsortedList[i].transform.localPosition = new Vector3( unsortedList[min].transform.localPosition.x,tempPos.y, tempPos.z);
-                //unsortedList[min].transform.localPosition = new Vector3(tempPos.x, unsortedList[min].transform.localPosition.y, unsortedList[min].transform.localPosition.z);
+                unsortedList[i].transform.localPosition = new Vector3(unsortedList[min].transform.localPosition.x, tempPos.y, tempPos.z);
+                unsortedList[min].transform.localPosition = new Vector3(tempPos.x, unsortedList[min].transform.localPosition.y, unsortedList[min].transform.localPosition.z);
                 LeanTween.color(unsortedList[i], Color.red, .4f);
                 LeanTween.color(unsortedList[min], Color.red, .4f);
                 LeanTween.color(unsortedList[min], unsortedList[i].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
 
-                LeanTween.moveLocalX(unsortedList[i], unsortedList[min].transform.localPosition.x, 1f);
-                LeanTween.moveLocalZ(unsortedList[i], -3, .5f).setLoopPingPong(1);
+                //LeanTween.moveLocalX(unsortedList[i], unsortedList[min].transform.localPosition.x, 1f);
+                //LeanTween.moveLocalZ(unsortedList[i], -0.3f, .5f).setLoopPingPong(1);
 
-                LeanTween.moveLocalX(unsortedList[min], unsortedList[i].transform.localPosition.x, 1f);
-                LeanTween.moveLocalZ(unsortedList[min], 3, .5f).setLoopPingPong(1);
+                //LeanTween.moveLocalX(unsortedList[min], unsortedList[i].transform.localPosition.x, 1f);
+                //LeanTween.moveLocalZ(unsortedList[min], .3f, .5f).setLoopPingPong(1);
             }
             LeanTween.color(unsortedList[i], Color.green, .1f).setDelay(.75f);
         }
@@ -161,8 +161,8 @@ public class CubeManager : MonoBehaviour
         {
             int randomHeight = Random.Range(1, cubeHeightMax + 1);
             GameObject instance = Instantiate(cube, barGraphs[barGraphs.Count-1].position.transform.position, Quaternion.identity);
-            instance.transform.position = new Vector3(barGraphs[barGraphs.Count - 1].position.transform.position.x + i * instance.transform.localScale.x, barGraphs[barGraphs.Count - 1].position.transform.position.y + (randomHeight / 2.0f), barGraphs[barGraphs.Count - 1].position.transform.position.z);
-            instance.transform.localScale = new Vector3(instance.transform.localScale.x * 0.8f, randomHeight, instance.transform.localScale.z);
+            instance.transform.position = new Vector3(barGraphs[barGraphs.Count - 1].position.transform.position.x + i * instance.transform.localScale.x, barGraphs[barGraphs.Count - 1].position.transform.position.y + ((float)randomHeight / 50 / 2.0f), barGraphs[barGraphs.Count - 1].position.transform.position.z);
+            instance.transform.localScale = new Vector3(instance.transform.localScale.x * 0.8f, (float)randomHeight / 50, instance.transform.localScale.z);
             instance.transform.parent = barGraphs[barGraphs.Count - 1].position.transform;
 
             barGraphs[barGraphs.Count - 1].cubesArray[i] = instance;
