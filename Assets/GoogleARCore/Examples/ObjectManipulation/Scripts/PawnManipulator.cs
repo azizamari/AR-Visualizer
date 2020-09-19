@@ -28,6 +28,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
     /// </summary>
     public class PawnManipulator : Manipulator
     {
+        public CubeManager cubeManager;
         /// <summary>
         /// The first-person camera being used to render the passthrough camera image (i.e. AR
         /// background).
@@ -95,7 +96,8 @@ namespace GoogleARCore.Examples.ObjectManipulation
                 {
                     // Instantiate game object at the hit pose.
                     var gameObject = Instantiate(PawnPrefab, hit.Pose.position, hit.Pose.rotation);
-
+                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes));
+                    cubeManager.Initsialize();
                     // Instantiate manipulator.
                     var manipulator =
                         Instantiate(ManipulatorPrefab, hit.Pose.position, hit.Pose.rotation);

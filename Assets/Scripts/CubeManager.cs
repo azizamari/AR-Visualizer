@@ -6,20 +6,21 @@ using UnityEngine.UI;
 
 public class CubeManager : MonoBehaviour
 {
-    public int numberOfCubes = 10;
-    public int cubeHeightMax = 10;
+    public int numberOfCubes = GameData.numberOfCubes;
+    public int cubeHeightMax = GameData.cubeHeightMax;
     public GameObject cube;
-    public GameObject Generator;
-    public GameObject Generator2;
+    //public GameObject Generator;
+    //public GameObject Generator2;
     public GameObject sortButton;
-    List<BarGraph> barGraphs= new List<BarGraph>();
+    public List<BarGraph> barGraphs= new List<BarGraph>();
     private void Start()
     {
-        barGraphs.Add(new BarGraph(Generator, numberOfCubes,SortType.Bubble));
-        barGraphs.Add(new BarGraph(Generator2, numberOfCubes));
-        Time.timeScale = 2;
+        //barGraphs.Add(new BarGraph(Generator, numberOfCubes));
+        //barGraphs.Add(new BarGraph(Generator2, numberOfCubes, SortType.Bubble));
+        Time.timeScale = 3;
         GenerateBlocks();
     }
+        
     public void GenerateBlocks()
     {
         StopAllCoroutines();
@@ -132,7 +133,6 @@ public class CubeManager : MonoBehaviour
 
                 LeanTween.moveLocalX(unsortedList[min], unsortedList[i].transform.localPosition.x, 1f);
                 LeanTween.moveLocalZ(unsortedList[min], 3, .5f).setLoopPingPong(1);
-
             }
             LeanTween.color(unsortedList[i], Color.green, .1f).setDelay(.75f);
         }
@@ -155,6 +155,19 @@ public class CubeManager : MonoBehaviour
             cubes = null;
         }
     }
+    public void Initsialize()
+    {
+        for (int i = 0; i < numberOfCubes; i++)
+        {
+            int randomHeight = Random.Range(1, cubeHeightMax + 1);
+            GameObject instance = Instantiate(cube, barGraphs[barGraphs.Count-1].position.transform.position, Quaternion.identity);
+            instance.transform.position = new Vector3(barGraphs[barGraphs.Count - 1].position.transform.position.x + i * instance.transform.localScale.x, barGraphs[barGraphs.Count - 1].position.transform.position.y + (randomHeight / 2.0f), barGraphs[barGraphs.Count - 1].position.transform.position.z);
+            instance.transform.localScale = new Vector3(instance.transform.localScale.x * 0.8f, randomHeight, instance.transform.localScale.z);
+            instance.transform.parent = barGraphs[barGraphs.Count - 1].position.transform;
+
+            barGraphs[barGraphs.Count - 1].cubesArray[i] = instance;
+        }
+    }
 }
 public enum SortType
 {
@@ -163,12 +176,13 @@ public enum SortType
     Merge,
     Quick,
 }
-
 public class BarGraph
 {
+    int cubeHeightMax = GameData.cubeHeightMax;
     public GameObject position;
     public SortType sortType = SortType.Selection;
     public GameObject[] cubesArray;
+    int numberOfCubes =GameData.numberOfCubes;
     public BarGraph(GameObject position, int numberOfCubes, SortType sortType = SortType.Selection)
     {
         this.position = position;
