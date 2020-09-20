@@ -96,15 +96,15 @@ namespace GoogleARCore.Examples.ObjectManipulation
                 {
                     // Instantiate game object at the hit pose.
                     var gameObject = Instantiate(PawnPrefab, hit.Pose.position, hit.Pose.rotation);
-                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes,SortType.Bubble));
-                    cubeManager.GenerateBlocks();
+
                     // Instantiate manipulator.
                     var manipulator =
                         Instantiate(ManipulatorPrefab, hit.Pose.position, hit.Pose.rotation);
 
                     // Make game object a child of the manipulator.
                     gameObject.transform.parent = manipulator.transform;
-
+                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes, SortType.Bubble));
+                    cubeManager.GenerateBlocks();
                     // Create an anchor to allow ARCore to track the hitpoint as understanding of
                     // the physical world evolves.
                     var anchor = hit.Trackable.CreateAnchor(hit.Pose);
