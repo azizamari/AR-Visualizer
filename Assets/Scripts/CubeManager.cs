@@ -121,18 +121,18 @@ public class CubeManager : MonoBehaviour
                 unsortedList[i] = unsortedList[min];
                 unsortedList[min] = temp;
 
-                tempPos = unsortedList[i].transform.localPosition;
+                tempPos = unsortedList[i].transform.position;
                 //unsortedList[i].transform.localPosition = new Vector3(unsortedList[min].transform.localPosition.x, tempPos.y, tempPos.z);
                 //unsortedList[min].transform.localPosition = new Vector3(tempPos.x, unsortedList[min].transform.localPosition.y, unsortedList[min].transform.localPosition.z);
                 LeanTween.color(unsortedList[i], Color.red, .4f);
                 LeanTween.color(unsortedList[min], Color.red, .4f);
                 LeanTween.color(unsortedList[min], unsortedList[i].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
 
-                LeanTween.moveLocalX(unsortedList[i], unsortedList[min].transform.localPosition.x, 1f);
-                LeanTween.moveLocalZ(unsortedList[i], -0.3f, .5f).setLoopPingPong(1);
+                LeanTween.moveX(unsortedList[i], unsortedList[min].transform.position.x, 1f);
+                LeanTween.moveZ(unsortedList[i], .03f, .5f).setLoopPingPong(1);
 
-                LeanTween.moveLocalX(unsortedList[min], unsortedList[i].transform.localPosition.x, 1f);
-                LeanTween.moveLocalZ(unsortedList[min], .3f, .5f).setLoopPingPong(1);
+                LeanTween.moveX(unsortedList[min], unsortedList[i].transform.position.x, 1f);
+                LeanTween.moveZ(unsortedList[min], .03f, .5f).setLoopPingPong(1);
             }
             LeanTween.color(unsortedList[i], Color.green, .1f).setDelay(.75f);
         }
