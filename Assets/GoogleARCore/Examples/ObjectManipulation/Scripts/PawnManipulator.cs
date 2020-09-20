@@ -96,7 +96,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
                 {
                     // Instantiate game object at the hit pose.
                     var gameObject = Instantiate(PawnPrefab, hit.Pose.position, hit.Pose.rotation);
-                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes));
+                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes,SortType.Bubble));
                     cubeManager.GenerateBlocks();
                     // Instantiate manipulator.
                     var manipulator =

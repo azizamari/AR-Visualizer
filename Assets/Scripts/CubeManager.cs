@@ -77,19 +77,19 @@ public class CubeManager : MonoBehaviour
                     unsortedList[y] = unsortedList[y + 1];
                     unsortedList[y + 1] = temp;
 
-                    tempPos = unsortedList[y].transform.localPosition;
-                    unsortedList[y].transform.localPosition = new Vector3(unsortedList[y + 1].transform.localPosition.x, tempPos.y, tempPos.z);
-                    unsortedList[y + 1].transform.localPosition = new Vector3(tempPos.x, unsortedList[y + 1].transform.localPosition.y, unsortedList[y + 1].transform.localPosition.z);
+                    tempPos = unsortedList[y].transform.position;
+                    //unsortedList[y].transform.localPosition = new Vector3(unsortedList[y + 1].transform.localPosition.x, tempPos.y, tempPos.z);
+                    //unsortedList[y + 1].transform.localPosition = new Vector3(tempPos.x, unsortedList[y + 1].transform.localPosition.y, unsortedList[y + 1].transform.localPosition.z);
                     LeanTween.color(unsortedList[y], Color.red, .4f);
                     LeanTween.color(unsortedList[y+1], Color.red, .4f);
                     LeanTween.color(unsortedList[y+1], unsortedList[y].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
                     LeanTween.color(unsortedList[y], unsortedList[y].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
 
-                    //LeanTween.moveLocalX(unsortedList[y], unsortedList[y + 1].transform.localPosition.x, 1f);
-                    //LeanTween.moveLocalZ(unsortedList[y], -0.3f, .5f).setLoopPingPong(1);
+                    LeanTween.moveX(unsortedList[y], unsortedList[y + 1].transform.position.x, 1f);
+                    LeanTween.moveZ(unsortedList[y], -0.3f, .5f).setLoopPingPong(1);
 
-                    //LeanTween.moveLocalX(unsortedList[y + 1], unsortedList[y].transform.localPosition.x, 1f);
-                    //LeanTween.moveLocalZ(unsortedList[y + 1], 0.3f, .5f).setLoopPingPong(1);
+                    LeanTween.moveX(unsortedList[y + 1], unsortedList[y].transform.position.x, 1f);
+                    LeanTween.moveZ(unsortedList[y + 1], 0.3f, .5f).setLoopPingPong(1);
                 }
             }
             LeanTween.color(unsortedList[numberOfCubes-x-1], Color.green, .4f).setDelay(1f);
