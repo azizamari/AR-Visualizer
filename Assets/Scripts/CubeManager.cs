@@ -18,7 +18,6 @@ public class CubeManager : MonoBehaviour
         //barGraphs.Add(new BarGraph(Generator, numberOfCubes));
         //barGraphs.Add(new BarGraph(Generator2, numberOfCubes, SortType.Bubble));
         Time.timeScale = 3;
-        GenerateBlocks();
     }
         
     public void GenerateBlocks()
@@ -27,16 +26,45 @@ public class CubeManager : MonoBehaviour
         resetBarGraphsCubesArray(barGraphs);
         foreach(var graph in barGraphs)
         {
-            for (int i = 0; i < numberOfCubes; i++)
+            if (!graph.exists)
             {
-                int randomHeight = Random.Range(1, cubeHeightMax + 1);
-                GameObject instance = Instantiate(cube, graph.position.transform.position, graph.position.transform.localRotation);
-                instance.transform.position = new Vector3(graph.position.transform.position.x + i * instance.transform.localScale.x, graph.position.transform.position.y + ((float)randomHeight / 50 / 2.0f), graph.position.transform.position.z);
-                instance.transform.localScale = new Vector3(instance.transform.localScale.x *0.8f, (float)randomHeight/50, instance.transform.localScale.z);
-                instance.transform.parent = graph.position.transform;
+                for (int i = 0; i < numberOfCubes; i++)
+                {
+                    int randomHeight = Random.Range(1, cubeHeightMax + 1);
+                    GameObject instance = Instantiate(cube, graph.position.transform.position, graph.position.transform.localRotation);
+                    instance.transform.position = new Vector3(graph.position.transform.position.x + i * instance.transform.localScale.x, graph.position.transform.position.y + ((float)randomHeight / 50 / 2.0f), graph.position.transform.position.z);
+                    instance.transform.localScale = new Vector3(instance.transform.localScale.x * 0.8f, (float)randomHeight / 50, instance.transform.localScale.z);
+                    instance.transform.parent = graph.position.transform;
+                    instance.GetComponent<Height>().height = (float)randomHeight / 50;
 
-                graph.cubesArray[i] = instance;
+                    graph.cubesArray[i] = instance;
+                    graph.exists = true;
+                }
             }
+            else
+            {
+                for (int i = 0; i < numberOfCubes; i++)
+                {
+                    graph.cubesArray[i].transform.GetComponent<MeshRenderer>().material.color = cube.transform.GetComponent<MeshRenderer>().material.color;
+                    int randomHeight = Random.Range(1, cubeHeightMax + 1);
+                    graph.cubesArray[i].transform.position = new Vector3(graph.cubesArray[i].transform.position.x,graph.position.transform.position.y + ((float)randomHeight / 50 / 2.0f), graph.cubesArray[i].transform.position.z);
+                    graph.cubesArray[i].transform.localScale = new Vector3(graph.cubesArray[i].transform.localScale.x * 0.8f, (float)randomHeight / 50, graph.cubesArray[i].transform.localScale.z);
+                    graph.cubesArray[i].GetComponent<Height>().height = (float)randomHeight / 50;
+                }
+            }
+        }
+    }
+    public void Initsialize()
+    {
+        for (int i = 0; i < numberOfCubes; i++)
+        {
+            int randomHeight = Random.Range(1, cubeHeightMax + 1);
+            GameObject instance = Instantiate(cube, barGraphs[barGraphs.Count - 1].position.transform.position, Quaternion.identity);
+            instance.transform.position = new Vector3(barGraphs[barGraphs.Count - 1].position.transform.position.x + i * instance.transform.localScale.x, barGraphs[barGraphs.Count - 1].position.transform.position.y + ((float)randomHeight / 50 / 2.0f), barGraphs[barGraphs.Count - 1].position.transform.position.z);
+            instance.transform.localScale = new Vector3(instance.transform.localScale.x * 0.8f, (float)randomHeight / 50, instance.transform.localScale.z);
+            instance.transform.parent = barGraphs[barGraphs.Count - 1].position.transform;
+
+            barGraphs[barGraphs.Count - 1].cubesArray[i] = instance;
         }
     }
     public void StartSort()
@@ -45,7 +73,7 @@ public class CubeManager : MonoBehaviour
         {
             if (bar.sortType == SortType.Selection)
             {
-                StartCoroutine(SelectionSort(bar.cubesArray));
+                StartCoroutine(SelectionSort(bar));
             }
             else if (bar.sortType == SortType.Bubble)
             {
@@ -96,52 +124,61 @@ public class CubeManager : MonoBehaviour
 
         }
     }
-    IEnumerator SelectionSort(GameObject[] unsortedList)
+    IEnumerator SelectionSort(BarGraph graph)
     {
         int min;
         GameObject temp;
-        Vector3 tempPos;
-        for(int i=0; i < unsortedList.Length; i++)
+        Vector3 tempScale;
+        for(int i=0; i < graph.cubesArray.Length; i++)
         {
             yield return new WaitForSeconds(1f);
             min = i;
-            for(int j = i; j < unsortedList.Length; j++)
+            for(int j = i; j < graph.cubesArray.Length; j++)
             {
-                unsortedList[j].transform.GetComponent<MeshRenderer>().material.color = Color.blue;
+                graph.cubesArray[j].transform.GetComponent<MeshRenderer>().material.color = Color.blue;
                 yield return new WaitForSeconds(.2f);
-                unsortedList[j].transform.GetComponent<MeshRenderer>().material.color = new Color32(103, 207, 228,1);
-                if (unsortedList[j].transform.localScale.y < unsortedList[min].transform.localScale.y)
+                graph.cubesArray[j].transform.GetComponent<MeshRenderer>().material.color = new Color32(103, 207, 228,1);
+                if (graph.cubesArray[j].transform.localScale.y < graph.cubesArray[min].transform.localScale.y)
                 {
                     min = j;
                 }
             }
             if (min != i) {
                 yield return new WaitForSeconds(1f);
-                temp = unsortedList[i];
-                unsortedList[i] = unsortedList[min];
-                unsortedList[min] = temp;
+                //temp = graph.cubesArray[i];
+                //graph.cubesArray[i] = graph.cubesArray[min];
+                //graph.cubesArray[min] = temp;
 
-                tempPos = unsortedList[i].transform.position;
-                //unsortedList[i].transform.localPosition = new Vector3(unsortedList[min].transform.localPosition.x, tempPos.y, tempPos.z);
-                //unsortedList[min].transform.localPosition = new Vector3(tempPos.x, unsortedList[min].transform.localPosition.y, unsortedList[min].transform.localPosition.z);
-                LeanTween.color(unsortedList[i], Color.red, .4f);
-                LeanTween.color(unsortedList[min], Color.red, .4f);
-                LeanTween.color(unsortedList[min], unsortedList[i].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
+                graph.cubesArray[i].transform.position = new Vector3(graph.cubesArray[i].transform.position.x,  graph.position.transform.position.y + graph.cubesArray[min].transform.localScale.y/2, graph.cubesArray[i].transform.position.z);
+                graph.cubesArray[min].transform.position = new Vector3(graph.cubesArray[min].transform.position.x,graph.position.transform.position.y + graph.cubesArray[i].transform.localScale.y/2, graph.cubesArray[min].transform.position.z);
+                tempScale = graph.cubesArray[i].transform.localScale;
+                graph.cubesArray[i].transform.localScale = graph.cubesArray[min].transform.localScale;
+                graph.cubesArray[min].transform.localScale = tempScale;
 
-                LeanTween.moveX(unsortedList[i], unsortedList[min].transform.position.x, 1f);
-                LeanTween.moveZ(unsortedList[i], .03f, .5f).setLoopPingPong(1);
+                //tempPos = unsortedList[i].transform.position;
+                //unsortedList[i].transform.position = new Vector3(unsortedList[min].transform.position.x, tempPos.y, tempPos.z);
+                //unsortedList[min].transform.position = new Vector3(tempPos.x, unsortedList[min].transform.position.y, unsortedList[min].transform.position.z);
+                LeanTween.color(graph.cubesArray[i], Color.red, .4f);
+                LeanTween.color(graph.cubesArray[min], Color.red, .4f);
+                LeanTween.color(graph.cubesArray[min], graph.cubesArray[i].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
 
-                LeanTween.moveX(unsortedList[min], unsortedList[i].transform.position.x, 1f);
-                LeanTween.moveZ(unsortedList[min], .03f, .5f).setLoopPingPong(1);
+                //LeanTween.moveX(unsortedList[i], unsortedList[min].transform.position.x, 1f);
+                //LeanTween.moveZ(unsortedList[i], .03f, .5f).setLoopPingPong(1);
+
+                //LeanTween.moveX(unsortedList[min], unsortedList[i].transform.position.x, 1f);
+                //LeanTween.moveZ(unsortedList[min], .03f, .5f).setLoopPingPong(1);
             }
-            LeanTween.color(unsortedList[i], Color.green, .1f).setDelay(.75f);
+            LeanTween.color(graph.cubesArray[i], Color.green, .1f).setDelay(.75f);
         }
     }
     public void resetBarGraphsCubesArray(List<BarGraph> list)
     {
         foreach(var graph in list)
         {
-            resetArray(graph.cubesArray);
+            if (graph.exists)
+            {
+                resetArray(graph.cubesArray);
+            }
         }
     }
     private void resetArray(GameObject[] cubes)
@@ -150,22 +187,9 @@ public class CubeManager : MonoBehaviour
         {
             for (int i = 0; i < cubes.Length; i++)
             {
-                Destroy(cubes[i]);
+                cubes[i].transform.localScale = cube.transform.localScale;
             }
             cubes = null;
-        }
-    }
-    public void Initsialize()
-    {
-        for (int i = 0; i < numberOfCubes; i++)
-        {
-            int randomHeight = Random.Range(1, cubeHeightMax + 1);
-            GameObject instance = Instantiate(cube, barGraphs[barGraphs.Count-1].position.transform.position, Quaternion.identity);
-            instance.transform.position = new Vector3(barGraphs[barGraphs.Count - 1].position.transform.position.x + i * instance.transform.localScale.x, barGraphs[barGraphs.Count - 1].position.transform.position.y + ((float)randomHeight / 50 / 2.0f), barGraphs[barGraphs.Count - 1].position.transform.position.z);
-            instance.transform.localScale = new Vector3(instance.transform.localScale.x * 0.8f, (float)randomHeight / 50, instance.transform.localScale.z);
-            instance.transform.parent = barGraphs[barGraphs.Count - 1].position.transform;
-
-            barGraphs[barGraphs.Count - 1].cubesArray[i] = instance;
         }
     }
 }
@@ -178,7 +202,7 @@ public enum SortType
 }
 public class BarGraph
 {
-    int cubeHeightMax = GameData.cubeHeightMax;
+    public bool exists = false;
     public GameObject position;
     public SortType sortType = SortType.Selection;
     public GameObject[] cubesArray;
