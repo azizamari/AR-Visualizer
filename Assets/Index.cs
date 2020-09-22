@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Height : MonoBehaviour
+public class Index : MonoBehaviour
 {
-    public float height;
+    public int index;
 }

@@ -21,6 +21,7 @@
 namespace GoogleARCore.Examples.ObjectManipulation
 {
     using UnityEngine;
+    using UnityEngine.UI;
 
     /// <summary>
     /// Manipulation system allows the user to manipulate virtual objects (select, translate,
@@ -32,6 +33,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
     /// </summary>
     public class ManipulationSystem : MonoBehaviour
     {
+        public GameObject manager;
         private static ManipulationSystem _instance = null;
 
         private DragGestureRecognizer _dragGestureRecognizer = new DragGestureRecognizer();
@@ -179,6 +181,14 @@ namespace GoogleARCore.Examples.ObjectManipulation
 
             Deselect();
             SelectedObject = target;
+        }
+        public void DeleteSelected()
+        {
+            if (SelectedObject != null)
+            {
+                manager.GetComponent<CubeManager>().AddIndexToDeletedBarsList(SelectedObject.GetComponentInChildren<Index>().index);
+                SelectedObject.SetActive(false);
+            }
         }
     }
 }

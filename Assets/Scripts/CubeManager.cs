@@ -13,58 +13,52 @@ public class CubeManager : MonoBehaviour
     //public GameObject Generator2;
     public GameObject sortButton;
     public List<BarGraph> barGraphs= new List<BarGraph>();
+    public List<int> deletedBars = new List<int>();
     private void Start()
     {
         //barGraphs.Add(new BarGraph(Generator, numberOfCubes));
         //barGraphs.Add(new BarGraph(Generator2, numberOfCubes, SortType.Bubble));
         Time.timeScale = 3;
     }
-        
+    public void AddIndexToDeletedBarsList(int index)
+    {
+        deletedBars.Add(index);
+    }
     public void GenerateBlocks()
     {
         StopAllCoroutines();
         resetBarGraphsCubesArray(barGraphs);
-        foreach(var graph in barGraphs)
+        for(int x = 0;x<barGraphs.Count;x++)
         {
-            if (!graph.exists)
+            if (!deletedBars.Contains(x))
             {
-                for (int i = 0; i < numberOfCubes; i++)
+                BarGraph graph = barGraphs[x];
+                if (!graph.exists)
                 {
-                    int randomHeight = Random.Range(1, cubeHeightMax + 1);
-                    GameObject instance = Instantiate(cube, graph.position.transform.position, graph.position.transform.localRotation);
-                    instance.transform.position = new Vector3(graph.position.transform.position.x + i * instance.transform.localScale.x, graph.position.transform.position.y + ((float)randomHeight / 50 / 2.0f), graph.position.transform.position.z);
-                    instance.transform.localScale = new Vector3(instance.transform.localScale.x * 0.8f, (float)randomHeight / 50, instance.transform.localScale.z);
-                    instance.transform.parent = graph.position.transform;
-                    instance.GetComponent<Height>().height = (float)randomHeight / 50;
+                    for (int i = 0; i < numberOfCubes; i++)
+                    {
+                        int randomHeight = Random.Range(1, cubeHeightMax + 1);
+                        GameObject instance = Instantiate(cube, graph.position.transform.position, graph.position.transform.localRotation);
+                        instance.transform.position = new Vector3(graph.position.transform.position.x + i * instance.transform.localScale.x, graph.position.transform.position.y + ((float)randomHeight / 50 / 2.0f), graph.position.transform.position.z);
+                        instance.transform.localScale = new Vector3(instance.transform.localScale.x * 0.8f, (float)randomHeight / 50, instance.transform.localScale.z);
+                        instance.transform.parent = graph.position.transform;
 
-                    graph.cubesArray[i] = instance;
-                    graph.exists = true;
+                        graph.cubesArray[i] = instance;
+                        graph.exists = true;
+                    }
+                }
+                else
+                {
+                    graph.position.GetComponent<Index>().index = x;
+                    for (int i = 0; i < numberOfCubes; i++)
+                    {
+                        graph.cubesArray[i].transform.GetComponent<MeshRenderer>().material.color = cube.transform.GetComponent<MeshRenderer>().material.color;
+                        int randomHeight = Random.Range(1, cubeHeightMax + 1);
+                        graph.cubesArray[i].transform.position = new Vector3(graph.cubesArray[i].transform.position.x, graph.position.transform.position.y + ((float)randomHeight / 50 / 2.0f), graph.cubesArray[i].transform.position.z);
+                        graph.cubesArray[i].transform.localScale = new Vector3(graph.cubesArray[i].transform.localScale.x * 0.8f, (float)randomHeight / 50, graph.cubesArray[i].transform.localScale.z);
+                    }
                 }
             }
-            else
-            {
-                for (int i = 0; i < numberOfCubes; i++)
-                {
-                    graph.cubesArray[i].transform.GetComponent<MeshRenderer>().material.color = cube.transform.GetComponent<MeshRenderer>().material.color;
-                    int randomHeight = Random.Range(1, cubeHeightMax + 1);
-                    graph.cubesArray[i].transform.position = new Vector3(graph.cubesArray[i].transform.position.x,graph.position.transform.position.y + ((float)randomHeight / 50 / 2.0f), graph.cubesArray[i].transform.position.z);
-                    graph.cubesArray[i].transform.localScale = new Vector3(graph.cubesArray[i].transform.localScale.x * 0.8f, (float)randomHeight / 50, graph.cubesArray[i].transform.localScale.z);
-                    graph.cubesArray[i].GetComponent<Height>().height = (float)randomHeight / 50;
-                }
-            }
-        }
-    }
-    public void Initsialize()
-    {
-        for (int i = 0; i < numberOfCubes; i++)
-        {
-            int randomHeight = Random.Range(1, cubeHeightMax + 1);
-            GameObject instance = Instantiate(cube, barGraphs[barGraphs.Count - 1].position.transform.position, Quaternion.identity);
-            instance.transform.position = new Vector3(barGraphs[barGraphs.Count - 1].position.transform.position.x + i * instance.transform.localScale.x, barGraphs[barGraphs.Count - 1].position.transform.position.y + ((float)randomHeight / 50 / 2.0f), barGraphs[barGraphs.Count - 1].position.transform.position.z);
-            instance.transform.localScale = new Vector3(instance.transform.localScale.x * 0.8f, (float)randomHeight / 50, instance.transform.localScale.z);
-            instance.transform.parent = barGraphs[barGraphs.Count - 1].position.transform;
-
-            barGraphs[barGraphs.Count - 1].cubesArray[i] = instance;
         }
     }
     public void StartSort()
@@ -127,7 +121,6 @@ public class CubeManager : MonoBehaviour
     IEnumerator SelectionSort(BarGraph graph)
     {
         int min;
-        GameObject temp;
         Vector3 tempScale;
         for(int i=0; i < graph.cubesArray.Length; i++)
         {
@@ -173,9 +166,10 @@ public class CubeManager : MonoBehaviour
     }
     public void resetBarGraphsCubesArray(List<BarGraph> list)
     {
-        foreach(var graph in list)
+        for(int x =0; x<list.Count;x++)
         {
-            if (graph.exists)
+            BarGraph graph = list[x];
+            if (graph.exists&&!deletedBars.Contains(x))
             {
                 resetArray(graph.cubesArray);
             }
