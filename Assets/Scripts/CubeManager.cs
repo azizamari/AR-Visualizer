@@ -71,7 +71,7 @@ public class CubeManager : MonoBehaviour
             }
             else if (bar.sortType == SortType.Bubble)
             {
-                StartCoroutine(BubbleSort(bar.cubesArray));
+                StartCoroutine(BubbleSort(bar));
             }
             else if (bar.sortType == SortType.Merge)
             {
@@ -83,38 +83,42 @@ public class CubeManager : MonoBehaviour
             }
         }
     }
-    IEnumerator BubbleSort(GameObject[] unsortedList)
+    IEnumerator BubbleSort(BarGraph graph)
     {
-        Vector3 tempPos;
+        Vector3 tempScale;
         GameObject temp;
         for (int x = 0; x < numberOfCubes; x++)
         {
 
             for (int y = 0; y < numberOfCubes - x - 1; y++)
             {
-                if (unsortedList[y].transform.localScale.y > unsortedList[y + 1].transform.localScale.y)
+                if (graph.cubesArray[y].transform.localScale.y > graph.cubesArray[y + 1].transform.localScale.y)
                 {
-                    yield return new WaitForSeconds(1.4f);
-                    temp = unsortedList[y];
-                    unsortedList[y] = unsortedList[y + 1];
-                    unsortedList[y + 1] = temp;
+                    yield return new WaitForSeconds(1f);
+                    //temp = graph.cubesArray[y];
+                    //graph.cubesArray[y] = graph.cubesArray[y + 1];
+                    //graph.cubesArray[y + 1] = temp;
 
-                    tempPos = unsortedList[y].transform.position;
+                    graph.cubesArray[y].transform.position = new Vector3(graph.cubesArray[y].transform.position.x, graph.position.transform.position.y + graph.cubesArray[y+1].transform.localScale.y / 2, graph.cubesArray[y].transform.position.z);
+                    graph.cubesArray[y+1].transform.position = new Vector3(graph.cubesArray[y+1].transform.position.x, graph.position.transform.position.y + graph.cubesArray[y].transform.localScale.y / 2, graph.cubesArray[y+1].transform.position.z);
+                    tempScale = graph.cubesArray[y].transform.localScale;
+                    graph.cubesArray[y].transform.localScale = graph.cubesArray[y+1].transform.localScale;
+                    graph.cubesArray[y+1].transform.localScale = tempScale;
                     //unsortedList[y].transform.localPosition = new Vector3(unsortedList[y + 1].transform.localPosition.x, tempPos.y, tempPos.z);
                     //unsortedList[y + 1].transform.localPosition = new Vector3(tempPos.x, unsortedList[y + 1].transform.localPosition.y, unsortedList[y + 1].transform.localPosition.z);
-                    LeanTween.color(unsortedList[y], Color.red, .4f);
-                    LeanTween.color(unsortedList[y+1], Color.red, .4f);
-                    LeanTween.color(unsortedList[y+1], unsortedList[y].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
-                    LeanTween.color(unsortedList[y], unsortedList[y].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.9f);
+                    LeanTween.color(graph.cubesArray[y], Color.red, .3f);
+                    LeanTween.color(graph.cubesArray[y+1], Color.red, .3f);
+                    LeanTween.color(graph.cubesArray[y+1], graph.cubesArray[y].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.6f);
+                    LeanTween.color(graph.cubesArray[y], graph.cubesArray[y].transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.6f);
 
-                    LeanTween.moveX(unsortedList[y], unsortedList[y+1].transform.position.x, 1f);
-                    LeanTween.moveZ(unsortedList[y], .03f, .5f).setLoopPingPong(1);
+                    //LeanTween.moveX(graph.cubesArray[y], graph.cubesArray[y+1].transform.position.x, 1f);
+                    //LeanTween.moveZ(graph.cubesArray[y], .03f, .5f).setLoopPingPong(1);
 
-                    LeanTween.moveX(unsortedList[y+1], unsortedList[y].transform.position.x, 1f);
-                    LeanTween.moveZ(unsortedList[y+1], .03f, .5f).setLoopPingPong(1);
+                    //LeanTween.moveX(graph.cubesArray[y+1], graph.cubesArray[y].transform.position.x, 1f);
+                    //LeanTween.moveZ(graph.cubesArray[y+1], .03f, .5f).setLoopPingPong(1);
                 }
             }
-            LeanTween.color(unsortedList[numberOfCubes-x-1], Color.green, .4f).setDelay(1f);
+            LeanTween.color(graph.cubesArray[numberOfCubes-x-1], Color.green, .4f).setDelay(1f);
 
         }
     }

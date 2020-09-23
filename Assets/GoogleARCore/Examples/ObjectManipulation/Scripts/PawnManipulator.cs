@@ -103,7 +103,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
 
                     // Make game object a child of the manipulator.
                     gameObject.transform.parent = manipulator.transform;
-                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes));
+                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes,SortType.Bubble));
                     cubeManager.GenerateBlocks();
                     // Create an anchor to allow ARCore to track the hitpoint as understanding of
                     // the physical world evolves.
