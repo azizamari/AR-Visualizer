@@ -112,7 +112,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
             if (!Frame.Raycast(
                 gesture.StartPosition.x, gesture.StartPosition.y, raycastFilter, out hit))
             {
-                Deselect();
+                //Deselect();
             }
         }
 

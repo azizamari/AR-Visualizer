@@ -21,6 +21,7 @@
 namespace GoogleARCore.Examples.ObjectManipulation
 {
     using GoogleARCore;
+    using System.Collections;
     using UnityEngine;
 
     /// <summary>
@@ -29,6 +30,8 @@ namespace GoogleARCore.Examples.ObjectManipulation
     public class PawnManipulator : Manipulator
     {
         public CubeManager cubeManager;
+
+        bool PlacingMode=false;
         /// <summary>
         /// The first-person camera being used to render the passthrough camera image (i.e. AR
         /// background).
@@ -81,7 +84,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
             TrackableHit hit;
             TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon;
 
-            if (Frame.Raycast(
+            if (PlacingMode&&Frame.Raycast(
                 gesture.StartPosition.x, gesture.StartPosition.y, raycastFilter, out hit))
             {
                 // Use hit pose and camera pose to check if hittest is from the
@@ -117,6 +120,20 @@ namespace GoogleARCore.Examples.ObjectManipulation
                     
                 }
             }
+        }
+        public void TogglePlacingMode()
+        {
+            if (!PlacingMode)
+            {
+                StartCoroutine(StartPlacing());
+            }
+            else
+                PlacingMode = false;
+        }
+        IEnumerator StartPlacing()
+        {
+            yield return new WaitForSeconds(.2f);
+            PlacingMode = true;
         }
     }
 }
