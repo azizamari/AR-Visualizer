@@ -86,7 +86,6 @@ public class CubeManager : MonoBehaviour
     IEnumerator BubbleSort(BarGraph graph)
     {
         Vector3 tempScale;
-        GameObject temp;
         for (int x = 0; x < numberOfCubes; x++)
         {
 
