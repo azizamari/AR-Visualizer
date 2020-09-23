@@ -189,6 +189,10 @@ public class CubeManager : MonoBehaviour
             cubes = null;
         }
     }
+    public void ChangeSortType(int i, SortType type)
+    {
+        barGraphs[i].sortType = type;
+    }
 }
 public enum SortType
 {
