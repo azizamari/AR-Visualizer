@@ -34,6 +34,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
     public class ManipulationSystem : MonoBehaviour
     {
         public GameObject manager;
+        public GameObject deleteButton;
         private static ManipulationSystem _instance = null;
 
         private DragGestureRecognizer _dragGestureRecognizer = new DragGestureRecognizer();
@@ -165,6 +166,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
         /// </summary>
         internal void Deselect()
         {
+            deleteButton.SetActive(false);
             SelectedObject = null;
         }
 
@@ -181,12 +183,14 @@ namespace GoogleARCore.Examples.ObjectManipulation
 
             Deselect();
             SelectedObject = target;
+            deleteButton.SetActive(true);
         }
         public void DeleteSelected()
         {
             if (SelectedObject != null)
             {
                 manager.GetComponent<CubeManager>().AddIndexToDeletedBarsList(SelectedObject.GetComponentInChildren<Index>().index);
+                deleteButton.SetActive(false);
                 SelectedObject.SetActive(false);
             }
         }
