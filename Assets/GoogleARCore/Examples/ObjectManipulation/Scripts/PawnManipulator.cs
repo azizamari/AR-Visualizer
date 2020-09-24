@@ -36,6 +36,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
         public GameObject sort;
         public GameObject dropdown;
         public GameObject delete;
+        public GameObject helper;
 
         bool PlacingMode=false;
         /// <summary>
@@ -125,6 +126,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
                     // Select the placed object.
                     ManipulationSystem.Instance.Select(manipulator);
                     PlacingMode = false;
+                    helper.SetActive(false);
                     UIVisiblity(true);
                 }
             }
@@ -132,6 +134,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
         public void StartPlacingMode()
         {
             UIVisiblity(false);
+            helper.SetActive(true);
             StartCoroutine(startPlacing());
         }
         IEnumerator startPlacing()
