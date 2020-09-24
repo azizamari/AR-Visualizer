@@ -190,9 +190,9 @@ namespace GoogleARCore.Examples.ObjectManipulation
 
             Deselect();
             SelectedObject = target;
-            UpdateDropDown();
             dropdown.SetActive(true);
             deleteButton.SetActive(true);
+            UpdateDropDown();
         }
         public void DeleteSelected()
         {

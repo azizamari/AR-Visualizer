@@ -114,6 +114,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
                     gameObject.transform.parent = manipulator.transform;
                     cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes));
                     cubeManager.GenerateBlocks();
+                    cubeManager.GenerateBlocks();
                     // Create an anchor to allow ARCore to track the hitpoint as understanding of
                     // the physical world evolves.
                     var anchor = hit.Trackable.CreateAnchor(hit.Pose);
@@ -122,7 +123,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
                     manipulator.transform.parent = anchor.transform;
 
                     // Select the placed object.
-                    manipulator.GetComponent<Manipulator>().Select();
+                    ManipulationSystem.Instance.Select(manipulator);
                     PlacingMode = false;
                     UIVisiblity(true);
                 }

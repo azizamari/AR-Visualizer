@@ -195,6 +195,7 @@ public class CubeManager : MonoBehaviour
         {
             barGraphs[i].sortType = type;
             GenerateBlocks();
+            GenerateBlocks();
         }
         else
             barGraphs[i].sortType = type;
