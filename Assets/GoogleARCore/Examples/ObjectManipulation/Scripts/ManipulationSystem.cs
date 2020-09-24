@@ -190,6 +190,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
 
             Deselect();
             SelectedObject = target;
+            UpdateDropDown();
             dropdown.SetActive(true);
             deleteButton.SetActive(true);
         }
@@ -202,6 +203,19 @@ namespace GoogleARCore.Examples.ObjectManipulation
                 SelectedObject.SetActive(false);
                 dropdown.SetActive(false);
             }
+        }
+        void UpdateDropDown()
+        {
+            if (manager.GetComponent<CubeManager>().barGraphs[SelectedObject.GetComponentInChildren<Index>().index].sortType == SortType.Selection)
+            {
+                dropdown.GetComponent<Dropdown>().value = 0;
+            }
+            else if (manager.GetComponent<CubeManager>().barGraphs[SelectedObject.GetComponentInChildren<Index>().index].sortType == SortType.Bubble)
+            {
+                dropdown.GetComponent<Dropdown>().value = 1;
+            }
+            else
+                dropdown.GetComponent<Dropdown>().value = 2;
         }
         public void DropDownValueChanged()
         {

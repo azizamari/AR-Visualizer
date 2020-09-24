@@ -140,7 +140,7 @@ public class CubeManager : MonoBehaviour
                 }
             }
             if (min != i) {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(1.2f);
                 //temp = graph.cubesArray[i];
                 //graph.cubesArray[i] = graph.cubesArray[min];
                 //graph.cubesArray[min] = temp;
@@ -164,7 +164,7 @@ public class CubeManager : MonoBehaviour
                 //LeanTween.moveX(unsortedList[min], unsortedList[i].transform.position.x, 1f);
                 //LeanTween.moveZ(unsortedList[min], .03f, .5f).setLoopPingPong(1);
             }
-            LeanTween.color(graph.cubesArray[i], Color.green, .1f).setDelay(.75f);
+            LeanTween.color(graph.cubesArray[i], Color.green, .1f).setDelay(.5f);
         }
     }
     public void resetBarGraphsCubesArray(List<BarGraph> list)
@@ -191,8 +191,14 @@ public class CubeManager : MonoBehaviour
     }
     public void ChangeSortType(int i, SortType type)
     {
-        barGraphs[i].sortType = type;
-        GenerateBlocks();
+        if (barGraphs[i].sortType != type)
+        {
+            barGraphs[i].sortType = type;
+            GenerateBlocks();
+        }
+        else
+            barGraphs[i].sortType = type;
+
     }
 }
 public enum SortType
