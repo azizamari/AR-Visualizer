@@ -20,6 +20,7 @@
 
 namespace GoogleARCore.Examples.ObjectManipulation
 {
+    using System;
     using UnityEngine;
     using UnityEngine.UI;
 
@@ -201,6 +202,24 @@ namespace GoogleARCore.Examples.ObjectManipulation
                 SelectedObject.SetActive(false);
                 dropdown.SetActive(false);
             }
+        }
+        public void DropDownValueChanged()
+        {
+            int val = dropdown.GetComponent<Dropdown>().value;
+            SortType sortType=SortType.Selection;
+            if (val == 0)
+            {
+                sortType = SortType.Selection;
+            }
+            else if (val == 1)
+            {
+                sortType = SortType.Bubble;
+            }
+            else if (val == 2)
+            {
+                sortType = SortType.Merge;
+            }
+            manager.GetComponent<CubeManager>().ChangeSortType(SelectedObject.GetComponentInChildren<Index>().index,sortType);
         }
     }
 }

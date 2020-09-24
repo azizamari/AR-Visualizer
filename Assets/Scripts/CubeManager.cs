@@ -192,6 +192,7 @@ public class CubeManager : MonoBehaviour
     public void ChangeSortType(int i, SortType type)
     {
         barGraphs[i].sortType = type;
+        GenerateBlocks();
     }
 }
 public enum SortType

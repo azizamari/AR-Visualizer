@@ -22,6 +22,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
 {
     using GoogleARCore;
     using System.Collections;
+    using System.Net.Sockets;
     using UnityEngine;
 
     /// <summary>
@@ -30,6 +31,11 @@ namespace GoogleARCore.Examples.ObjectManipulation
     public class PawnManipulator : Manipulator
     {
         public CubeManager cubeManager;
+
+        public GameObject randomize;
+        public GameObject sort;
+        public GameObject dropdown;
+        public GameObject delete;
 
         bool PlacingMode=false;
         /// <summary>
@@ -106,7 +112,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
 
                     // Make game object a child of the manipulator.
                     gameObject.transform.parent = manipulator.transform;
-                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes,SortType.Bubble));
+                    cubeManager.barGraphs.Add(new BarGraph(gameObject, cubeManager.numberOfCubes));
                     cubeManager.GenerateBlocks();
                     // Create an anchor to allow ARCore to track the hitpoint as understanding of
                     // the physical world evolves.
@@ -117,23 +123,27 @@ namespace GoogleARCore.Examples.ObjectManipulation
 
                     // Select the placed object.
                     manipulator.GetComponent<Manipulator>().Select();
-                    
+                    PlacingMode = false;
+                    UIVisiblity(true);
                 }
             }
         }
-        public void TogglePlacingMode()
+        public void StartPlacingMode()
         {
-            if (!PlacingMode)
-            {
-                StartCoroutine(StartPlacing());
-            }
-            else
-                PlacingMode = false;
+            UIVisiblity(false);
+            StartCoroutine(startPlacing());
         }
-        IEnumerator StartPlacing()
+        IEnumerator startPlacing()
         {
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(.15f);
             PlacingMode = true;
         }
+        void UIVisiblity(bool _value)
+        {
+            randomize.SetActive(_value);
+            sort.SetActive(_value);
+            delete.SetActive(_value);
+            dropdown.SetActive(_value);
+        } 
     }
 }
