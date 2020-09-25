@@ -1,1 +1,1 @@
-# AR-Sorting-Visualizer
+# AR Visualizer
