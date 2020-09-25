@@ -181,18 +181,32 @@ public class CubeManager : MonoBehaviour
 
                 while (j - gap >= 0 && temp.y < graph.cubesArray[j - gap].transform.localScale.y)
                 {
+                    yield return new WaitForSeconds(1.5f);
+
+                    LeanTween.color(graph.cubesArray[j], Color.red, .2f);
+                    LeanTween.color(graph.cubesArray[j], cube.transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.6f);
+
                     graph.cubesArray[j].transform.position = new Vector3(graph.cubesArray[j].transform.position.x, graph.position.transform.position.y + graph.cubesArray[j-gap].transform.localScale.y / 2, graph.cubesArray[j].transform.position.z);
                     graph.cubesArray[j].transform.localScale = graph.cubesArray[j - gap].transform.localScale;
                     //array[j] = array[j - gap];
+
                     j = j - gap;
                 }
+
+                LeanTween.color(graph.cubesArray[j], Color.red, .2f);
+                LeanTween.color(graph.cubesArray[j], cube.transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.6f);
+
                 graph.cubesArray[j].transform.position = new Vector3(graph.cubesArray[j].transform.position.x, graph.position.transform.position.y + temp.y / 2, graph.cubesArray[j].transform.position.z);
                 graph.cubesArray[j].transform.localScale = temp;
                 //array[j] = temp;
             }
 
             gap = gap / 2;
-            yield return new WaitForSeconds(.1f);
+        }
+        foreach(var cube in graph.cubesArray)
+        {
+            yield return new WaitForSeconds(.2f);
+            LeanTween.color(cube, Color.green, .2f);
         }
     }
     public void resetBarGraphsCubesArray(List<BarGraph> list)
