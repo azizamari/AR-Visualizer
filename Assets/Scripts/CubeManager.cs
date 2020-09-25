@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class CubeManager : MonoBehaviour
 {
-    public int numberOfCubes = GameData.numberOfCubes;
-    public int cubeHeightMax = GameData.cubeHeightMax;
+    public int numberOfCubes;
+    public int cubeHeightMax;
     public GameObject cube;
     //public GameObject Generator;
     //public GameObject Generator2;
@@ -16,6 +16,8 @@ public class CubeManager : MonoBehaviour
     public List<int> deletedBars = new List<int>();
     private void Start()
     {
+        numberOfCubes = GameData.numberOfCubes;
+        cubeHeightMax = GameData.cubeHeightMax;
         //barGraphs.Add(new BarGraph(Generator, numberOfCubes));
         //barGraphs.Add(new BarGraph(Generator2, numberOfCubes, SortType.Bubble));
         Time.timeScale = 3;
@@ -75,11 +77,7 @@ public class CubeManager : MonoBehaviour
             }
             else if (bar.sortType == SortType.Merge)
             {
-                //Start MergeSort Coroutine
-            }
-            else
-            {
-                //Start quickSort Coroutine
+                StartCoroutine(QuickSort(bar,0,bar.cubesArray.Length-1));
             }
         }
     }
@@ -167,6 +165,61 @@ public class CubeManager : MonoBehaviour
             LeanTween.color(graph.cubesArray[i], Color.green, .1f).setDelay(.5f);
         }
     }
+
+
+    IEnumerator QuickSort(BarGraph bar, int start, int end)
+    {
+        int i;
+        if (start < end)
+        {
+            i = Partition(bar, start, end);
+            StartCoroutine(QuickSort(bar, start, i - 1));
+            StartCoroutine(QuickSort(bar, i + 1, end));
+            yield return new WaitForSeconds(.1f);
+        }
+        else
+        {
+            foreach(var cube in bar.cubesArray)
+            {
+                LeanTween.color(cube, Color.green, 0.5f);
+            }
+        }
+    }
+    private int Partition(BarGraph bar, int start, int end)
+    {
+
+        Vector3 tempScale;
+        GameObject p = bar.cubesArray[end];
+        int i = start - 1;
+
+        for (int j = start; j <= end - 1; j++)
+        {
+            if (bar.cubesArray[j].transform.localScale.y <= p.transform.localScale.y)
+            {
+                i++;
+                bar.cubesArray[i].transform.position = new Vector3(bar.cubesArray[i].transform.position.x, bar.position.transform.position.y + bar.cubesArray[j].transform.localScale.y / 2, bar.cubesArray[i].transform.position.z);
+                bar.cubesArray[j].transform.position = new Vector3(bar.cubesArray[j].transform.position.x, bar.position.transform.position.y + bar.cubesArray[i].transform.localScale.y / 2, bar.cubesArray[j].transform.position.z);
+                tempScale = bar.cubesArray[i].transform.localScale;
+                bar.cubesArray[i].transform.localScale = bar.cubesArray[j].transform.localScale;
+                bar.cubesArray[j].transform.localScale = tempScale;
+                //temp = bar.cubesArray[i];
+                //bar.cubesArray[i] = bar.cubesArray[j];
+                //bar.cubesArray[j] = temp;
+            }
+        }
+
+        bar.cubesArray[i + 1].transform.position = new Vector3(bar.cubesArray[i + 1].transform.position.x, bar.position.transform.position.y + bar.cubesArray[end].transform.localScale.y / 2, bar.cubesArray[i + 1].transform.position.z);
+        bar.cubesArray[end].transform.position = new Vector3(bar.cubesArray[end].transform.position.x, bar.position.transform.position.y + bar.cubesArray[i + 1].transform.localScale.y / 2, bar.cubesArray[end].transform.position.z);
+        tempScale = bar.cubesArray[i + 1].transform.localScale;
+        bar.cubesArray[i + 1].transform.localScale = bar.cubesArray[end].transform.localScale;
+        bar.cubesArray[end].transform.localScale = tempScale;
+        //temp = bar.cubesArray[i + 1];
+        //bar.cubesArray[i + 1] = bar.cubesArray[end];
+        //bar.cubesArray[end] = temp;
+        return i + 1;
+    }
+
+
     public void resetBarGraphsCubesArray(List<BarGraph> list)
     {
         for(int x =0; x<list.Count;x++)

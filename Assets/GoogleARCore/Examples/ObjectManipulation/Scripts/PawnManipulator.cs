@@ -36,6 +36,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
         public GameObject sort;
         public GameObject dropdown;
         public GameObject delete;
+        public GameObject addGraph;
         public GameObject helper;
 
         bool PlacingMode=false;
@@ -145,6 +146,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
         void UIVisiblity(bool _value)
         {
             randomize.SetActive(_value);
+            addGraph.SetActive(_value);
             sort.SetActive(_value);
             delete.SetActive(_value);
             dropdown.SetActive(_value);
