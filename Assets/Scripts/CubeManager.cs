@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CubeManager : MonoBehaviour
 {
     public int numberOfCubes;
-    public int cubeHeightMax;
+    public int cubeHeightMax = GameData.cubeHeightMax;
     public GameObject cube;
     //public GameObject Generator;
     //public GameObject Generator2;
@@ -77,7 +77,7 @@ public class CubeManager : MonoBehaviour
             }
             else if (bar.sortType == SortType.Merge)
             {
-                StartCoroutine(QuickSort(bar,0,bar.cubesArray.Length-1));
+                StartCoroutine(ShellSort(bar));
             }
         }
     }
@@ -165,61 +165,36 @@ public class CubeManager : MonoBehaviour
             LeanTween.color(graph.cubesArray[i], Color.green, .1f).setDelay(.5f);
         }
     }
-
-
-    IEnumerator QuickSort(BarGraph bar, int start, int end)
+    IEnumerator ShellSort(BarGraph graph)
     {
-        int i;
-        if (start < end)
+
+        int n = graph.cubesArray.Length;
+        int gap = n / 2;
+        Vector3 temp;
+
+        while (gap > 0)
         {
-            i = Partition(bar, start, end);
-            StartCoroutine(QuickSort(bar, start, i - 1));
-            StartCoroutine(QuickSort(bar, i + 1, end));
+            for (int i = 0; i + gap < n; i++)
+            {
+                int j = i + gap;
+                temp = graph.cubesArray[j].transform.localScale;
+
+                while (j - gap >= 0 && temp.y < graph.cubesArray[j - gap].transform.localScale.y)
+                {
+                    graph.cubesArray[j].transform.position = new Vector3(graph.cubesArray[j].transform.position.x, graph.position.transform.position.y + graph.cubesArray[j-gap].transform.localScale.y / 2, graph.cubesArray[j].transform.position.z);
+                    graph.cubesArray[j].transform.localScale = graph.cubesArray[j - gap].transform.localScale;
+                    //array[j] = array[j - gap];
+                    j = j - gap;
+                }
+                graph.cubesArray[j].transform.position = new Vector3(graph.cubesArray[j].transform.position.x, graph.position.transform.position.y + temp.y / 2, graph.cubesArray[j].transform.position.z);
+                graph.cubesArray[j].transform.localScale = temp;
+                //array[j] = temp;
+            }
+
+            gap = gap / 2;
             yield return new WaitForSeconds(.1f);
         }
-        else
-        {
-            foreach(var cube in bar.cubesArray)
-            {
-                LeanTween.color(cube, Color.green, 0.5f);
-            }
-        }
     }
-    private int Partition(BarGraph bar, int start, int end)
-    {
-
-        Vector3 tempScale;
-        GameObject p = bar.cubesArray[end];
-        int i = start - 1;
-
-        for (int j = start; j <= end - 1; j++)
-        {
-            if (bar.cubesArray[j].transform.localScale.y <= p.transform.localScale.y)
-            {
-                i++;
-                bar.cubesArray[i].transform.position = new Vector3(bar.cubesArray[i].transform.position.x, bar.position.transform.position.y + bar.cubesArray[j].transform.localScale.y / 2, bar.cubesArray[i].transform.position.z);
-                bar.cubesArray[j].transform.position = new Vector3(bar.cubesArray[j].transform.position.x, bar.position.transform.position.y + bar.cubesArray[i].transform.localScale.y / 2, bar.cubesArray[j].transform.position.z);
-                tempScale = bar.cubesArray[i].transform.localScale;
-                bar.cubesArray[i].transform.localScale = bar.cubesArray[j].transform.localScale;
-                bar.cubesArray[j].transform.localScale = tempScale;
-                //temp = bar.cubesArray[i];
-                //bar.cubesArray[i] = bar.cubesArray[j];
-                //bar.cubesArray[j] = temp;
-            }
-        }
-
-        bar.cubesArray[i + 1].transform.position = new Vector3(bar.cubesArray[i + 1].transform.position.x, bar.position.transform.position.y + bar.cubesArray[end].transform.localScale.y / 2, bar.cubesArray[i + 1].transform.position.z);
-        bar.cubesArray[end].transform.position = new Vector3(bar.cubesArray[end].transform.position.x, bar.position.transform.position.y + bar.cubesArray[i + 1].transform.localScale.y / 2, bar.cubesArray[end].transform.position.z);
-        tempScale = bar.cubesArray[i + 1].transform.localScale;
-        bar.cubesArray[i + 1].transform.localScale = bar.cubesArray[end].transform.localScale;
-        bar.cubesArray[end].transform.localScale = tempScale;
-        //temp = bar.cubesArray[i + 1];
-        //bar.cubesArray[i + 1] = bar.cubesArray[end];
-        //bar.cubesArray[end] = temp;
-        return i + 1;
-    }
-
-
     public void resetBarGraphsCubesArray(List<BarGraph> list)
     {
         for(int x =0; x<list.Count;x++)
