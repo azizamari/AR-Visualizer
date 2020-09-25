@@ -28,6 +28,7 @@ public class CubeManager : MonoBehaviour
     }
     public void GenerateBlocks()
     {
+        sortButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
         StopAllCoroutines();
         resetBarGraphsCubesArray(barGraphs);
         for(int x = 0;x<barGraphs.Count;x++)
@@ -65,6 +66,7 @@ public class CubeManager : MonoBehaviour
     }
     public void StartSort()
     {
+        sortButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
         foreach(var bar in barGraphs)
         {
             if (bar.sortType == SortType.Selection)
@@ -183,8 +185,8 @@ public class CubeManager : MonoBehaviour
                 {
                     yield return new WaitForSeconds(1.5f);
 
-                    LeanTween.color(graph.cubesArray[j], Color.red, .2f);
-                    LeanTween.color(graph.cubesArray[j], cube.transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.6f);
+                    LeanTween.color(graph.cubesArray[j], Color.red, .3f);
+                    LeanTween.color(graph.cubesArray[j], cube.transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.7f);
 
                     graph.cubesArray[j].transform.position = new Vector3(graph.cubesArray[j].transform.position.x, graph.position.transform.position.y + graph.cubesArray[j-gap].transform.localScale.y / 2, graph.cubesArray[j].transform.position.z);
                     graph.cubesArray[j].transform.localScale = graph.cubesArray[j - gap].transform.localScale;
@@ -193,8 +195,8 @@ public class CubeManager : MonoBehaviour
                     j = j - gap;
                 }
 
-                LeanTween.color(graph.cubesArray[j], Color.red, .2f);
-                LeanTween.color(graph.cubesArray[j], cube.transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.6f);
+                LeanTween.color(graph.cubesArray[j], Color.red, .3f);
+                LeanTween.color(graph.cubesArray[j], cube.transform.GetComponent<MeshRenderer>().material.color, .1f).setDelay(.7f);
 
                 graph.cubesArray[j].transform.position = new Vector3(graph.cubesArray[j].transform.position.x, graph.position.transform.position.y + temp.y / 2, graph.cubesArray[j].transform.position.z);
                 graph.cubesArray[j].transform.localScale = temp;
