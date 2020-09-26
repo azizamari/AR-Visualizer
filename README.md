@@ -20,6 +20,6 @@ AR Visualizer is a project aimed at showcasing how famous algorithms (e.g: Bubbl
 ## Installation process
 #### Requirements: 
  * An ARCore supported Android phone ( to check if your phone is supported check this [list for ARCore supported devices](https://developers.google.com/ar/discover/supported-devices) or go to play store if you find this app "Google Play services for AR" that means your device is ARCore Supported).
-* Now install this [apk]() in your device.
+* Now install this [apk](https://github.com/azizamari/AR-Visualizer/blob/master/build/AR%20Visualizer.apk) in your device.
 * When you first open it you will be prompted to download "Google Play services for AR" download it.
 * Last step you have to press yes when prompted to give permission for using your camera.
