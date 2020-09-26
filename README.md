@@ -15,6 +15,8 @@ AR Visualizer is a project aimed at showcasing how famous algorithms (e.g: Bubbl
   * Move your object by holding your finger on desired object and then dragging it around.
 * Delete "Bar Graphs" by selecting them and then pressing the "Delete" button on top right corner.
 * Change the algorithm used for sorting using a drop down list (currently we have: Bubble Sort, Shell Sort and Selection Sort)
+* Sort Arrays "Bar Graphs" using the "Start Sorting" button on bottom  left corner. 
+* Randomize Arrays to sort them again ("Randomize" button on bottom left corner).
 ## Installation process
 #### Requirements: 
  * An ARCore supported Android phone ( to check if your phone is supported check this [list for ARCore supported devices](https://developers.google.com/ar/discover/supported-devices) or go to play store if you find this app "Google Play services for AR" that means your device is ARCore Supported).
