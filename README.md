@@ -1,5 +1,6 @@
 # AR Visualizer
 #### This app was developed by [Aziz Amari](https://azizamari.cf) as submission for [AlgoExpert's contest](https://www.algoexpert.io/swe-project-contests/2020-summer)
+#### [Watch video demo](https://youtu.be/VbpRLLs6Fck)
 ## Purpose
 AR Visualizer is a project aimed at showcasing how famous algorithms (e.g: Bubble Sort, Shell Sort,...) work in a more immersive experience using "Augmented Reality" technologies.
 ## Technologies used
